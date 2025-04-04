@@ -4,10 +4,14 @@
  * @LastEditors: ztachi(legendryztachi@gmail.com)
  * @LastEditTime: 2025-03-04 00:24:00
  * @FilePath: /mac-file-transfer/src/main.js
- * @Description: 
+ * @Description: Vue 应用程序入口文件
  */
 import { createApp } from 'vue';
 import App from './App.vue';
+import pinia from './store';
 import './assets/css/main.css';
 
-createApp(App).mount('#app');
+const app = createApp(App);
+
+app.use(pinia);
+app.mount('#app');

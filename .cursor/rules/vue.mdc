@@ -1,0 +1,16 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# 代码风格
+- 代码洁癖，尽可能精简。
+- 注重用户交互，保持页面美观。
+- 一个vue文件不应该太长。里面一些工具函数能够提取到同级helper.js里面，一些全局公共方法，提到全局js里面。或者拆分成更多子组件。
+- 使用vue组合式API：<script setup></script>
+- css能用tailwindcss解决的，就用它解决，复杂的，或者样式能复用、能作用一大块区域的就自己写（自己掂量）。
+- css编写请使用sass：<style lang="scss" scoped></style>，并且写法尽量按照结构嵌套，如：div>div 而非：div div。
+- 模块化编程，能细分的就细分。
+- 常量单独存放在src/const目录下，通用的就放在index.js，一些特殊类型或者某些模块专用的，就分文件存储。
+- 注重注释添加（中文）。比如每个函数给出详细注释，入参、入参类型等，return类型。关键的逻辑代码，每行上面也要加注释

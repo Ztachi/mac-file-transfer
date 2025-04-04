@@ -4,7 +4,7 @@
   "description": "MTP file transfer application for Nintendo Switch",
   "main": "main.js",
   "scripts": {
-    "start": "concurrently \"vite\" \"wait-on tcp:3000 && electron .\"",
+    "start": "concurrently \"vite\" \"wait-on http://localhost:3000 && electron .\"",
     "build": "vite build && electron-builder",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,10 +17,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@ant-design/icons-vue": "^7.0.1",
     "@vitejs/plugin-vue": "^5.0.0",
+    "ant-design-vue": "next",
     "autoprefixer": "^10.4.16",
     "electron": "^28.0.0",
     "electron-builder": "^24.9.1",
+    "pinia": "^3.0.1",
     "postcss": "^8.4.32",
     "sass": "^1.69.5",
     "tailwindcss": "^3.3.6",
@@ -30,6 +33,7 @@
   "devDependencies": {
     "concurrently": "^8.2.2",
     "electron-is-dev": "^2.0.0",
+    "unplugin-vue-components": "^28.4.1",
     "vite": "^5.0.7",
     "wait-on": "^7.2.0"
   }

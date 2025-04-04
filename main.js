@@ -12,9 +12,10 @@ function createWindow() {
     width: 900,
     height: 680,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
-      enableRemoteModule: true,
+      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: false,
+      contextIsolation: true,
+      enableRemoteModule: false,
     },
   });
 
@@ -54,47 +55,73 @@ app.on('activate', () => {
 
 // 处理MTP设备检测
 ipcMain.handle('detect-mtp-devices', async () => {
+  console.log('[main.js] 收到 detect-mtp-devices 请求');
   try {
     const devices = await mtpService.detectDevices();
-    return { success: true, devices };
+    console.log('[main.js] detect-mtp-devices 结果:', devices);
+    return devices;
   } catch (error) {
-    return { success: false, error: error.message };
+    console.error('[main.js] detect-mtp-devices 错误:', error);
+    throw error;
   }
 });
 
 // 获取设备文件列表
 ipcMain.handle('get-device-files', async (event, folderPath) => {
+  console.log(`[main.js] 收到 get-device-files 请求: ${folderPath}`); // 添加日志
   try {
     const files = await mtpService.getFiles(folderPath);
+     console.log('[main.js] get-device-files 结果:', files); // 添加日志
     return { success: true, files };
   } catch (error) {
+    console.error('[main.js] get-device-files 错误:', error); // 添加日志
     return { success: false, error: error.message };
   }
 });
 
 // 选择本地文件
 ipcMain.handle('select-local-file', async () => {
+  console.log('[main.js] 收到 select-local-file 请求'); // 添加日志
   try {
     const result = await dialog.showOpenDialog(mainWindow, {
       properties: ['openFile']
     });
     
     if (!result.canceled && result.filePaths.length > 0) {
+       console.log('[main.js] select-local-file 结果:', result.filePaths[0]); // 添加日志
       return { success: true, filePath: result.filePaths[0] };
     }
     
+     console.log('[main.js] select-local-file 用户取消'); // 添加日志
     return { success: false, error: '未选择文件' };
   } catch (error) {
+    console.error('[main.js] select-local-file 错误:', error); // 添加日志
     return { success: false, error: error.message };
   }
 });
 
 // 传输文件到设备
 ipcMain.handle('transfer-file', async (event, sourcePath, destinationPath) => {
+  console.log(`[main.js] 收到 transfer-file 请求: ${sourcePath} -> ${destinationPath}`); // 添加日志
   try {
     const success = await mtpService.transferFile(sourcePath, destinationPath);
+    console.log('[main.js] transfer-file 结果:', success); // 添加日志
     return { success };
   } catch (error) {
+    console.error('[main.js] transfer-file 错误:', error); // 添加日志
     return { success: false, error: error.message };
+  }
+});
+
+// 断开MTP设备连接
+ipcMain.handle('disconnect-mtp-device', async () => {
+  console.log('[main.js] 收到 disconnect-mtp-device 请求');
+  try {
+    const success = await mtpService.disconnect();
+    console.log('[main.js] disconnect-mtp-device 结果:', success);
+    return success;
+  } catch (error) {
+    console.error('[main.js] disconnect-mtp-device 错误:', error);
+    throw error;
   }
 }); 
