@@ -3,6 +3,9 @@ node_modules
 .pnp
 .pnp.js
 
+# cursor规则
+.cursor
+
 # 构建输出
 dist
 dist-ssr
